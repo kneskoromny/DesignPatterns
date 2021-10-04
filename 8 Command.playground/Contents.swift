@@ -1,7 +1,5 @@
 
-
 class Account {
-    
     var accountName: String
     var balance: Int
     
@@ -10,15 +8,12 @@ class Account {
         self.balance = balance
     }
 }
-
-
 protocol Command {
     func execute()
     var isComplete: Bool { get set }
 }
-
+// для снятия денег
 class Deposit: Command {
-    
     private var _account: Account
     private var _amount: Int
     var isComplete = false
@@ -27,7 +22,7 @@ class Deposit: Command {
         self._account = account
         self._amount = amount
     }
-    
+    // метод протокола
     func execute() {
         _account.balance += _amount
         isComplete = true
@@ -44,7 +39,6 @@ class Withdraw: Command {
         self._account = account
         self._amount = amount
     }
-    
     func execute() {
         if _account.balance >= _amount {
             _account.balance -= _amount
@@ -54,11 +48,11 @@ class Withdraw: Command {
         }
     }
 }
-
+// отвечает за транзакции, ничего не знает об аккаунтах
 class TransactionManager {
-    
     static let shared = TransactionManager()
     private init() {}
+    
     private var _transactions: [Command] = []
     
     var pendingTransactions: [Command] {
@@ -82,9 +76,9 @@ let transactionManager = TransactionManager.shared
 transactionManager.addTransactions(command: Deposit(account: account, amount: 100))
 transactionManager.addTransactions(command: Withdraw(account: account, amount: 500))
 transactionManager.pendingTransactions
-account.balance
+print(account.balance)
 transactionManager.processingTransactions()
-account.balance
+print(account.balance)
 
 
 
